@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: opa
+  namespace: opa-system # သီးခြား namespace သုံးထားပါသည်
+spec:
+  replicas: 2 # Availability အတွက် replica ၂ ခု ထားရန် အကြံပြုပါသည်
+  selector:
+    matchLabels:
+      app: opa
+  template:
+    metadata:
+      labels:
+        app: opa
+    spec:
+      containers:
+        - name: opa
+          image: openpolicyagent/opa:latest
+          args:
+            - "run"
+            - "--server"
+            - "--addr=:8181"
+            - "--set=decision_logs.console=true" # Debugging အတွက် log ထုတ်ရန်
+          ports:
+            - containerPort: 8181
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: opa-service
+  namespace: opa-system
+spec:
+  ports:
+    - port: 8181
+      targetPort: 8181
+      protocol: TCP
+  selector:
+    app: opa
