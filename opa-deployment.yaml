@@ -2,9 +2,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: opa
-  namespace: opa-system # သီးခြား namespace သုံးထားပါသည်
+  namespace: opa-system
 spec:
-  replicas: 2 # Availability အတွက် replica ၂ ခု ထားရန် အကြံပြုပါသည်
+  replicas: 2
   selector:
     matchLabels:
       app: opa
@@ -20,7 +20,9 @@ spec:
             - "run"
             - "--server"
             - "--addr=:8181"
-            - "--set=decision_logs.console=true" # Debugging အတွက် log ထုတ်ရန်
+            - "--grpc-addr=:9191"
+            - "--set=decision_logs.console=true" 
+            - "--set=plugins.envoy_ext_authz_grpc.path=istio/authz/allow"
           ports:
             - containerPort: 8181
 ---
@@ -31,8 +33,11 @@ metadata:
   namespace: opa-system
 spec:
   ports:
-    - port: 8181
+    - name: http
+      port: 8181
       targetPort: 8181
-      protocol: TCP
+    - name: grpc
+      port: 9191
+      targetPort: 9191
   selector:
     app: opa
