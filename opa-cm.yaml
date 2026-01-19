@@ -13,13 +13,13 @@ data:
 
     default allow = true
 
-    allow = false {
+    allow = false if {
         http_request.method == "GET"
         contains(source_principal, "service-blue")
         contains(dest_principal, "service-yellow")
     }
 
-    allow = false {
+    allow = false if {
         http_request.method == "GET"
         contains(source_principal, "service-green")
         contains(dest_principal, "service-blue")
