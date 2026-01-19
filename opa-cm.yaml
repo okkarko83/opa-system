@@ -15,12 +15,12 @@ data:
 
     allow = false if {
         http_request.method == "GET"
-        contains(source_principal, "service-blue")
-        contains(dest_principal, "service-yellow")
+        contains(source_principal, "poc-svc-blue")
+        contains(dest_principal, "poc-svc-yellow")
     }
 
     allow = false if {
         http_request.method == "GET"
-        contains(source_principal, "service-green")
-        contains(dest_principal, "service-blue")
+        contains(source_principal, "poc-svc-green")
+        contains(dest_principal, "poc-svc-blue")
     }
