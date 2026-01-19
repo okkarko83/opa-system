@@ -25,13 +25,13 @@ spec:
             - "--set=plugins.envoy_ext_authz_grpc.path=istio/authz/allow"
             - "/etc/policy/policy.rego"
           volumeMounts:
-            - name: policy-volumeMounts
+            - name: policy-volumemounts
               mountPath: /etc/policy
               readOnly: true
           ports:
             - containerPort: 8181
       volumes:
-        - name: policy-volumeMounts
+        - name: policy-volumemounts
           configMap:
             name: opa-policy         
 ---
