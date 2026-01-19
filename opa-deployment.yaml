@@ -23,6 +23,8 @@ spec:
             - "--set=plugins.envoy_ext_authz_grpc.addr=:9191"
             - "--set=decision_logs.console=true" 
             - "--set=plugins.envoy_ext_authz_grpc.path=istio/authz/allow"
+            - "/etc/policy/policy.rego"
+            
           ports:
             - containerPort: 8181
 ---
