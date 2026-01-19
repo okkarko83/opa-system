@@ -8,9 +8,19 @@ data:
     package istio.authz
 
     import input.attributes.request.http as http_request
+    import input.attributes.source.principal as source_principal
+    import input.attributes.destination.principal as dest_principal
 
     default allow = true
 
-    result = {
-        "allowed": allow
+    allow = false {
+        http_request.method == "GET"
+        contains(source_principal, "service-blue")
+        contains(dest_principal, "service-yellow")
+    }
+
+    allow = false {
+        http_request.method == "GET"
+        contains(source_principal, "service-green")
+        contains(dest_principal, "service-blue")
     }
