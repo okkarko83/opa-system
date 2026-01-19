@@ -24,9 +24,16 @@ spec:
             - "--set=decision_logs.console=true" 
             - "--set=plugins.envoy_ext_authz_grpc.path=istio/authz/allow"
             - "/etc/policy/policy.rego"
-            
+          volumeMounts:
+            - name: policy-volumeMounts
+              mountPath: /etc/policy
+              readOnly: true
           ports:
             - containerPort: 8181
+      volumes:
+        - name: policy-volumeMounts
+          configMap:
+            name: opa-policy         
 ---
 apiVersion: v1
 kind: Service
